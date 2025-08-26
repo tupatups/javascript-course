@@ -379,3 +379,149 @@ console.log(n);
 
 console.log(2 + 3 + 4 + "5"); // Try to guess!
 console.log("10" - "4" - "3" - 2 + "5"); // This one's tricky!
+
+// Equality - Strict 
+
+// const age = "18";
+// if (age === 18) console.log("You just became an adult :D (strict)");
+// if (age == 18) console.log("You just became an adult :D (loose)");
+
+// console.log("18" === 18);
+// console.log("18" == 18); //coercion happens
+// console.log(18 === 18);
+
+// // why == can be dangerous
+// console.log("0" == 0);
+// console.log(0 == false);
+// console.log("0" == false);
+// console.log(null == undefined);
+
+// console.log("" == 0);
+// console.log("   " == 0);
+
+// best practice
+
+// const favourite = Number(prompt("What's your favourite number?"));
+// console.log(favourite);
+// console.log(typeof favourite);
+
+// if (favourite === 23) {
+//   console.log("Cool! 23 is an amazing number!");
+// } else if (favourite === 7) {
+//   console.log("7 is also a cool number");
+// } else if (favourite === 9) {
+//   console.log("9 is also a cool number");
+// } else {
+//   console.log("Number is not 23 or 7 or 9");
+// }
+
+// if (favourite !== 23) console.log("Why not 23?");
+
+// // This login system has bugs - fix them!
+// const username = prompt("Username:");
+// const password = prompt("Password:");
+
+// // Bugs: using == instead of ===
+// if (username == "admin" && password == "1234") {
+//   console.log("Welcome admin!");
+// } else {
+//   console.log("Access denied");
+// }
+
+// // Fix using strict equality
+// // Your code here...
+// const username = prompt("Username:");
+// const password = prompt("Password:");
+
+// // Use === for strict equality
+// if (username === "admin" && password === "1234") {
+//   console.log("Welcome admin!");
+// } else {
+//   console.log("Access denied");
+// }
+
+// Logical Operators
+
+
+const hasDriversLicense = false;
+const hasGoodVision = false;
+
+console.log (`AND OPERATOR: ${hasDriversLicense && hasGoodVision}`);
+console.log (`OR OPERATOR: ${hasDriversLicense || hasGoodVision}`);
+console.log (`NOT OPERATOR: ${!hasDriversLicense}`);
+
+const isTired = true;
+console.log(hasDriversLicense && hasGoodVision && !isTired);
+
+if (hasDriversLicense && hasGoodVision && !isTired) {
+  console.log("Tupe is able to drive!");
+} else {
+  console.log("Someone else should drive...");
+}   
+
+// // more complex scenarios
+// const age = 20;
+// const hasPermission = true;
+// const hasExperience = false;
+
+// if ((age >= 18 || hasPermission) && hasExperience) {
+//   console.log("Approved to drive");
+// } else {
+//   console.log("Not approved to drive");
+// }
+
+// Create a club entry system with these rules:
+// Entry allowed if: (age >= 21 AND hasID) OR isVIP
+
+// const age = 23; // Try different values
+// const hasID = true; // Try different values
+// const isVIP = false; // Try different values
+
+// // Your logic here:
+// // if (...) {
+// //   console.log('Welcome to the club!');
+// // } else {
+// //   console.log('Sorry, you cannot enter');
+// // }
+
+// if ((age >= 21 && hasID) || isVIP) {
+//   console.log("Welcome to the club!");
+// } else {
+//   console.log("Sorry, you cannot enter");
+// }
+
+// The Conditional (Ternary) Operator
+
+const age = 17;
+
+const drink = age >= 18 ? `wine` : `water`;
+console.log(drink);
+
+//if esle statement
+let drink2;
+if (age >= 18) {
+  drink2 = `wine`;
+} else {
+  drink2 = `water`;
+}
+console.log(drink2);
+
+console.log(`I like to drink ${age >= 18 ? `wine` : `water`}`);
+
+////////////////////////////////////
+// Coding Challenge #4
+
+const bill = 275; // Test with 275, 40, and 430
+
+// Step 1: Create the tip calculation using ternary operator
+// Rule: 15% if between 50-300, otherwise 20% 
+// Hint: bill >= 50 && bill <= 300
+
+const tip = (bill >= 50 && bill <= 300) ? bill * 0.15 : bill * 0.20; // Your ternary operator here
+
+// Step 2: Create beautiful output with template literal
+console.log(`The bill was ${bill}, the tip was ${tip}, and the total value ${bill + tip}`);
+// Expected outputs:
+// Bill 275: "The bill was 275, the tip was 41.25, and the total value 316.25"
+// Bill 40:  "The bill was 40, the tip was 8, and the total value 48"
+// Bill 430: "The bill was 430, the tip was 86, and the total value 516"
