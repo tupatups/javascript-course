@@ -1,108 +1,309 @@
-console.log("Part 2: Functions ready!"); 
+// // // console.log("Part 2: Functions ready!"); 
 
-// Functions - Declarations - Expressions
-console.log("=== FUNCTIONS ===");
+// // // // Functions - Declarations - Expressions
+// // // console.log("=== FUNCTIONS ===");
 
-function logger() {
-  console.log("My name is Christopher");
-}
+// // // function logger() {
+// // //   console.log("My name is Christopher");
+// // // }
 
-logger();
-logger();
+// // // logger();
+// // // logger();
 
-function fruitProcessor(strawberries, bananas) {
-    console.log(strawberries, bananas);
-    const juice = `Juice with ${strawberries} strawberries and  ${bananas} bananas.`;
-    return juice;
-}
+// // // function fruitProcessor(strawberries, bananas) {
+// // //     console.log(strawberries, bananas);
+// // //     const juice = `Juice with ${strawberries} strawberries and  ${bananas} bananas.`;
+// // //     return juice;
+// // // }
 
-console.log(fruitProcessor(5, 3));
+// // // console.log(fruitProcessor(5, 3));
 
-// const juice1 = `Juice with 5 apples and 0 oranges.`;
-// const juice2 = `Juice with 2 apples and 4 oranges.`;
-// const juice3 = `Juice with 3 apples and 2 oranges.`;
-// console.log(juice1);
+// // // // const juice1 = `Juice with 5 apples and 0 oranges.`;
+// // // // const juice2 = `Juice with 2 apples and 4 oranges.`;
+// // // // const juice3 = `Juice with 3 apples and 2 oranges.`;
+// // // // console.log(juice1);
 
-const juice1 = fruitProcessor(5, 0);
-const juice2 = fruitProcessor(2, 4);
-const juice3 = fruitProcessor(3, 2);
-console.log(juice1);
+// // // const juice1 = fruitProcessor(5, 0);
+// // // const juice2 = fruitProcessor(2, 4);
+// // // const juice3 = fruitProcessor(3, 2);
+// // // console.log(juice1);
 
-// Function Expressions
+// // // // Function Expressions
+// // // const calcAge = function (birthYear) {
+// // //     return 2025 - birthYear;
+// // // }; 
+
+// // // console.log(calcAge(2004));
+// // // console.log(calcAge(1871));
+
+// // // function introduce(firstName, lastName, age) {
+// // //     const introduction = `Hi, I'm ${firstName} ${lastName}, and I'm ${age} years old.`;
+// // //     return introduction;
+// // // }
+
+// // // console.log(introduce("Christopher", "Naval", "21"))
+
+
+// // // // Return Values and Scope
+
+// // // function yearsUntilRetirement(birthYear,firstName) {
+// // //     const age = calcAge(birthYear);
+// // //     const retirement = 65 - age;
+
+// // //     if (retirement > 0) {
+// // //         return `${firstName} retires in ${retirement} years.`;
+// // //     } else {
+// // //         return `${firstName} has already retired.`;
+// // //     }
+// // // }
+// // // console.log(yearsUntilRetirement(2004, "Christopher"));
+
+// // // // Global scope
+// // // const globalVar = "I am global";
+
+// // // function testScope() {
+// // //     const localVar = "I am local";
+// // //     console.log(globalVar);
+// // //     console.log(localVar);
+// // // }
+
+// // // testScope();
+// // // console.log(globalVar); 
+
+// // // // Coding Challenge #1
+
+// // // // Function to calculate average of 3 scores
+// // // function calcAverage(score1, score2, score3) {
+// // //     return (score1 + score2 + score3) / 3;
+// // //   // Your code here
+// // // }
+
+// // // // Function to check winner
+// // // function checkWinner(avgDolphins, avgKoalas) {
+// // //   // Your code here 
+// // //     if (avgDolphins >= 2 * avgKoalas) {
+// // //         return  `Dolphins win (${avgDolphins} vs. ${avgKoalas})`;
+// // // } else if (avgKoalas >= 2 * avgDolphins) {
+// // //      return `Koalas win (${avgKoalas} vs. ${avgDolphins})`;
+// // // } else {
+// // //     return `No team wins. Dolphins (${avgDolphins} vs. ${avgKoalas})`; 
+// // // }
+// // // }
+
+// // // // test data 1
+// // // let scoreDolphins = calcAverage(44, 23, 71);
+// // // let scoreKoalas = calcAverage(65, 54, 49);
+// // // console.log(checkWinner(scoreDolphins, scoreKoalas));
+
+// // // // test data 2
+// // // scoreDolphins = calcAverage(21, 21, 32);
+// // // scoreKoalas = calcAverage(123, 284, 397);
+// // // console.log(checkWinner(scoreDolphins, scoreKoalas));
+
+// // // // test data 3 for dolphins
+// // // scoreDolphins = calcAverage(85, 54, 41);
+// // // scoreKoalas = calcAverage(23, 34, 27);
+// // // console.log(checkWinner(scoreDolphins, scoreKoalas));
+
+
+// // const grades = [85, 92, 78, 96, 88];
+// // console.log(grades);
+
+// // // Arrays - Creation and Access
+// // console.log("=== ARRAYS ===");
+
+// // const friends = ["RJ Abarrientos", "Darren", "Jonel"];
+// // console.log(friends);
+
+// // const mixed = ["Tupe", 21, true, friends];
+// // console.log(mixed);
+
+
+// // const years = new Array(1991, 1984, 2008, 2020);
+// // console.log(years);
+
+
+// // console.log(friends[0]);
+// // console.log(friends[1]);
+// // console.log(friends[2]);
+
+// // console.log(friends.length);
+
+// // console.log(friends[friends.length - 1]);
+
+// // friends[1] = "Jay";
+// // console.log(friends);
+
+
+// // const firstName = "Christoher";
+// // const tupe = [firstName, "Naval", 2025 - 2004];
+// // console.log(tupe);
+
+
+// // const calcAge = function (birthYear) {
+// //   return 2025 - birthYear;
+// // };
+
+
+// // const ages = [calcAge(2004), calcAge(2005), calcAge(2012)];
+// // console.log(ages);
+
+// // Array Methods - adding elements
+// // lesson 2 array data manipulations
+const student1Grade = 85;
+const student2Grade = 92;
+const student3Grade = 78;
+ 
+// const grades = [85, 92, 78, 96, 88];
+// console.log(grades);
+ 
+let friends = ["Michael", "Steven", "Peter"];
+console.log(friends);
+ 
+const mixed = ["Jonas", 27, true, friends];
+console.log(mixed);
+ 
+const years = new Array(1991, 1984, 2008, 2020);
+console.log(years);
+ 
+console.log(friends[0])
+console.log(friends[1])
+console.log(friends[2])
+ 
+console.log(friends.length)
+console.log(friends[friends.length - 1])
+ 
+friends[1] = 'jay';
+console.log(friends);
+ 
+const firstName = "RJ"
+const rj = [firstName, "Silagan", 2025 - 2005]
+console.log(rj);
+ 
 const calcAge = function (birthYear) {
-    return 2025 - birthYear;
-}; 
-
-console.log(calcAge(2004));
-console.log(calcAge(1871));
-
-function introduce(firstName, lastName, age) {
-    const introduction = `Hi, I'm ${firstName} ${lastName}, and I'm ${age} years old.`;
-    return introduction;
+  return 2025 - birthYear;
+};
+ 
+const ages = [calcAge(1991), calcAge(1967), calcAge(2002)];
+console.log(ages);
+ 
+// Array Methods - Adding elements
+ 
+// Push - add to end
+const newLength = friends.push("Steven");
+console.log(friends); // ['Michael', 'Steven', 'Peter', 'Jay']
+console.log(newLength);
+ 
+friends.unshift('Maria')
+console.log(friends)
+ 
+const popped = friends.pop()
+const popped2 = friends.pop()
+console.log(popped)
+console.log(popped2)
+console.log(friends)
+ 
+const shifted = friends.shift()
+console.log(shifted)
+console.log(friends)
+ 
+console.log(friends.indexOf('jay'))
+ 
+console.log(friends.includes('jay'))
+ 
+////////////////////////////////////
+// Array Iteration - Loops
+ 
+friends =  ["Michael", "Steven", "Peter"];
+ 
+for (let index = 0; index < friends.length; index++) {
+    console.log(friends[index])
 }
-
-console.log(introduce("Christopher", "Naval", "21"))
-
-
-// Return Values and Scope
-
-function yearsUntilRetirement(birthYear,firstName) {
-    const age = calcAge(birthYear);
-    const retirement = 65 - age;
-
-    if (retirement > 0) {
-        return `${firstName} retires in ${retirement} years.`;
-    } else {
-        return `${firstName} has already retired.`;
+ 
+friends.forEach((friend, index) => {
+    console.log(`${index}: ${friend}`)
+})
+ 
+const grades2 = [85, 92, 78, 96, 88, 74]
+ 
+let total = 0;
+for (let index = 0; index < grades2.length; index++) {
+    total += grades2[index]
+}
+ 
+const ave = total / grades2.length
+console.log(`Average: ${ave.toFixed(2)}`)
+ 
+let passedCount = 0;
+grades2.forEach(
+    grade => {
+        if (grade >= 70){
+            passedCount++;
+        }
     }
+)
+console.log(`${passedCount} out of ${grades2.length} have passed`)
+
+// Coding Challenge #2 - Student Grade Manager
+
+const grades = [78, 85, 92, 67, 65, 95, 73, 82];
+
+// Function to calculate average
+function calculateAverage(grades) {
+    // Your code here
+    // Hint: Sum all grades, then divide by number of grades
+    let total = 0; 
+    for (let i = 0; i < grades.length; i++) {
+        total += grades[i];
+    }
+    return total / grades.length;
 }
-console.log(yearsUntilRetirement(2004, "Christopher"));
 
-// Global scope
-const globalVar = "I am global";
-
-function testScope() {
-    const localVar = "I am local";
-    console.log(globalVar);
-    console.log(localVar);
-}
-
-testScope();
-console.log(globalVar); 
-
-// Coding Challenge #1
-
-// Function to calculate average of 3 scores
-function calcAverage(score1, score2, score3) {
-    return (score1 + score2 + score3) / 3;
+// Function to find highest grade
+function findHighestGrade(grades) {
   // Your code here
+  // Hint: Start with first grade, compare with each subsequent grade
+    let highest = grades[0];
+    for (let i = 1; i < grades.length; i++) {
+        if (grades[i] > highest) {
+            highest = grades[i];
+        }
+    }
+    return highest;
 }
 
-// Function to check winner
-function checkWinner(avgDolphins, avgKoalas) {
-  // Your code here 
-    if (avgDolphins >= 2 * avgKoalas) {
-        return  `Dolphins win (${avgDolphins} vs. ${avgKoalas})`;
-} else if (avgKoalas >= 2 * avgDolphins) {
-     return `Koalas win (${avgKoalas} vs. ${avgDolphins})`;
-} else {
-    return `No team wins. Dolphins (${avgDolphins} vs. ${avgKoalas})`; 
+// Function to find lowest grade
+function findLowestGrade(grades) {
+    let lowest = grades[0];
+    for (let i= 1; i < grades.length; i++) {
+        if (grades[i] < lowest) {
+            lowest = grades[i];
+        }
+    }
+    return lowest;
 }
+
+// Function to count passing students
+function countPassing(grades, passingGrade) {
+  // Your code here
+  let count = 0;
+  for (let i = 0; i <grades.length; i++) {
+    if (grades[i] >= passingGrade) {
+        count++;
+    }
+  }
+  return count;
+  // Hint: Counter pattern - increment when condition is met
 }
 
-// test data 1
-let scoreDolphins = calcAverage(44, 23, 71);
-let scoreKoalas = calcAverage(65, 54, 49);
-console.log(checkWinner(scoreDolphins, scoreKoalas));
+// Generate complete report
+const average = calculateAverage(grades);
+const highest = findHighestGrade(grades);
+const lowest = findLowestGrade(grades);
+const passing = countPassing(grades, 70);
 
-// test data 2
-scoreDolphins = calcAverage(21, 21, 32);
-scoreKoalas = calcAverage(123, 284, 397);
-console.log(checkWinner(scoreDolphins, scoreKoalas));
-
-// test data 3 for dolphins
-scoreDolphins = calcAverage(85, 54, 41);
-scoreKoalas = calcAverage(23, 34, 27);
-console.log(checkWinner(scoreDolphins, scoreKoalas));
-
-
+console.log("=== GRADE REPORT ===");
+console.log(`Average: ${average.toFixed(2)}`);
+console.log(`Highest: ${highest}`);
+console.log(`Lowest: ${lowest}`);
+console.log(`Passing students: ${passing} out of ${grades.length}`);
