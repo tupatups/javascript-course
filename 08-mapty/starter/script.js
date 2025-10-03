@@ -99,3 +99,162 @@ console.log(
   cycling1 instanceof Workout
 );
  
+
+// Check if geolocation is supported
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      // Success callback - user granted permission
+      const { latitude } = position.coords;
+      const { longitude } = position.coords;
+      console.log(`User location: ${latitude}, ${longitude}`);
+    },
+    function () {
+      // Error callback - user denied permission or other error
+      alert('Could not get your position');
+    }
+  );
+}   
+
+console.log('=== TESTING GEOLOCATION API ===');
+
+function getPosition() {
+  if (navigator.geolocation) {
+    console.log('🔍 Requesting user location...');
+    navigator.geolocation.getCurrentPosition(
+        loadMap,
+      function (position) {
+        const { latitude } = position.coords;
+        const { longitude } = position.coords;
+        console.log(`Your current location: ${latitude}, ${longitude}`);
+
+        // Create a Google Maps link to verify the location
+        const googleMapsUrl = `https://www.google.pt/maps/@${latitude},${longitude}`;
+        console.log(`View on Google Maps: ${googleMapsUrl}`);
+      },
+      function (error) {
+        console.error('Geolocation error:', error);
+
+        let message = 'Could not get your position. ';
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            message +=
+              'Location access was denied. Please enable location services and refresh the page.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            message += 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+            message += 'Location request timed out.';
+            break;
+          default:
+            message += 'An unknown error occurred.';
+            break;
+        }
+
+        alert(`📍 ${message}`);
+      },
+      {
+        timeout: 10000,
+        enableHighAccuracy: true,
+        maximumAge: 600000,
+      }
+    );
+  } else {
+    alert('❌ Geolocation is not supported by this browser');
+  }
+}
+
+// Test the geolocation
+getPosition();
+
+function loadMap(position) {
+    const {latitude, longitude} = position.coords;
+    console.log(`Loading map at coordinates: ${latitude}, ${longitude}`);
+
+    //create coordinate array
+
+    const coords =[latitude, longitude];
+
+    // initialize map and center at users location
+    const map = L.map('map').setView(coords, 13);
+
+    // add open street map
+     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  L.marker(coords).addTo(map).bindPopup('Test location!').openPopup();
+  
+  map.on('click', function (mapEvent){
+
+    const {lat, lng} = mapEvent.latlng;
+
+    console.log (`Map clicked at coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+
+    L.marker([lat, lng])
+    .addTo(map)
+    .bindPopup(
+        `Workout location<br>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`
+    )
+    openPopup();
+  });
+
+
+  console.log('Map created successfully!');
+}
+
+class App {
+  #map;
+  #mapZoomLevel = 13;
+  #mapEvent;
+  #workouts = [];
+
+  constructor() {
+    this._getPosition();
+  }
+
+  _getPosition() {
+    if (navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert('Could not get your position');
+        }
+      );
+  }
+
+  _loadMap(position) {
+    const { latitude } = position.coords;
+    const { longitude } = position.coords;
+    const coords = [latitude, longitude];
+
+    this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    // Add click event listener
+    this.#map.on('click', this._showForm.bind(this));
+  }
+
+  _showForm(mapE) {
+    this.#mapEvent = mapE;
+    const { lat, lng } = mapE.latlng;
+
+    console.log(`Map clicked at: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+
+    // Add a temporary marker to show where user clicked
+    L.marker([lat, lng])
+      .addTo(this.#map)
+      .bindPopup(`Clicked here: ${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+      .openPopup();
+  }
+}
+
+// Create the app
+const app = new App(); 
