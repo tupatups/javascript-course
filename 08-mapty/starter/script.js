@@ -122,9 +122,20 @@ class App {
     console.log('🚀 App starting...');
     this._getPosition();
 
-    // attach event handlers
+    this._getLocalStorage();
+
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+
+    document.addEventListener(
+      'keydown',
+      function (e) {
+        if (e.key === 'Escape' && !form.classList.contains('hidden')) {
+          this._hideForm();
+        }
+      }.bind(this)
+    );
   }
 
   _getPosition() {
@@ -183,6 +194,10 @@ class App {
     }).addTo(this.#map);
 
     this.#map.on('click', this._showForm.bind(this));
+
+    this.#workouts.forEach(work => {
+      this._renderWorkoutMarker(work);
+    });
     console.log('🗺️ Default map loaded successfully');
   }
 
@@ -200,6 +215,10 @@ class App {
 
     L.marker(coords).addTo(this.#map).bindPopup('You are here!').openPopup();
     this.#map.on('click', this._showForm.bind(this));
+
+    this.#workouts.forEach(work => {
+      this._renderWorkoutMarker(work);
+    });
     console.log('Map loaded successfully!');
   }
 
@@ -252,16 +271,32 @@ Lng: ${lng.toFixed(4)}`
     const { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
+    // validation with specific error messages
+    const showValidationError = message => {
+      alert(`❌ Validation Error: ${message}`);
+      inputDistance.focus();
+    };
+
+    // for empty inputs
+    if (!distance || !duration) {
+      return showValidationError('Distance and duration are required!');
+    }
+
     // If workout running, create running object
     if (type === 'running') {
       const cadence = +inputCadence.value;
 
-      // Check if data is valid
-      if (
-        !validInputs(distance, duration, cadence) ||
-        !allPositive(distance, duration, cadence)
-      )
-        return alert('Inputs have to be positive numbers!');
+      if (!cadence) {
+        return showValidationError('Cadence is required for running workouts!');
+      }
+
+      if (!validInputs(distance, duration, cadence)) {
+        return showValidationError('All inputs must be valid numbers!');
+      }
+
+      if (!allPositive(distance, duration, cadence)) {
+        return showValidationError('All values must be positive numbers!');
+      }
 
       workout = new Running([lat, lng], distance, duration, cadence);
     }
@@ -270,11 +305,17 @@ Lng: ${lng.toFixed(4)}`
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
 
-      if (
-        !validInputs(distance, duration, elevation) ||
-        !allPositive(distance, duration)
-      )
-        return alert('Inputs have to be positive numbers!');
+      if (!validInputs(distance, duration, elevation)) {
+        return showValidationError(
+          'Distance, duration, and elevation must be valid numbers!'
+        );
+      }
+
+      if (!allPositive(distance, duration)) {
+        return showValidationError(
+          'Distance and duration must be positive numbers!'
+        );
+      }
 
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
@@ -296,6 +337,176 @@ Lng: ${lng.toFixed(4)}`
 
     // Hide form after submission
     this._hideForm();
+
+    this._setLocalStorage();
+  }
+
+  _setLocalStorage() {
+    try {
+      localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+      console.log(`Saved ${this.#workouts.length} workouts to localStorage`);
+    } catch (error) {
+      console.error('Error saving workouts to localStorage:', error);
+      alert('Could not save workout data. Storage might be full.');
+    }
+  }
+
+  _getLocalStorage() {
+    try {
+      const data = localStorage.getItem('workouts');
+
+      if (!data) {
+        console.log('No saved workouts found');
+        return;
+      }
+
+      console.log('Loading saved workouts from localStorage');
+      this.#workouts = JSON.parse(data);
+
+      // Restore object prototypes
+      this.#workouts = this.#workouts.map(work => {
+        if (work.type === 'running') {
+          return new Running(
+            work.coords,
+            work.distance,
+            work.duration,
+            work.cadence
+          );
+        }
+        if (work.type === 'cycling') {
+          return new Cycling(
+            work.coords,
+            work.distance,
+            work.duration,
+            work.elevationGain
+          );
+        }
+      });
+
+      this.#workouts.forEach(work => {
+        this._renderWorkout(work);
+      });
+
+      console.log(`Loaded ${this.#workouts.length} workouts from storage`);
+    } catch (error) {
+      console.error('Error loading workouts from localStorage:', error);
+      // Clear corrupted data
+      localStorage.removeItem('workouts');
+      this.#workouts = [];
+    }
+  }
+
+  _getLocalStorage() {
+    const data = localStorage.getItem('workouts');
+
+    if (!data) return;
+
+    this.#workouts = JSON.parse(data);
+
+    // Restore object prototypes
+    this.#workouts = this.#workouts.map(work => {
+      if (work.type === 'running') {
+        return new Running(
+          work.coords,
+          work.distance,
+          work.duration,
+          work.cadence
+        );
+      }
+      if (work.type === 'cycling') {
+        return new Cycling(
+          work.coords,
+          work.distance,
+          work.duration,
+          work.elevationGain
+        );
+      }
+    });
+
+    this.#workouts.forEach(work => {
+      this._renderWorkout(work);
+    });
+  }
+
+  _showAllWorkouts() {
+    console.log('All workouts:', this.#workouts);
+    return this.#workouts;
+  }
+
+  _clearAllData() {
+    if (confirm('⚠️ This will delete all workout data. Are you sure?')) {
+      localStorage.removeItem('workouts');
+      location.reload();
+    }
+  }
+
+  _exportWorkouts() {
+    const dataStr = JSON.stringify(this.#workouts, null, 2);
+    console.log('Workout data (copy this to backup):');
+    console.log(dataStr);
+    return dataStr;
+  }
+
+  _importWorkouts(workoutData) {
+    try {
+      const workouts = JSON.parse(workoutData);
+      localStorage.setItem('workouts', workoutData);
+      location.reload();
+      console.log('✅ Workouts imported successfully');
+    } catch (error) {
+      console.error('❌ Error importing workouts:', error);
+      alert('Invalid workout data format');
+    }
+  }
+
+  // Add these to global scope for easy console access
+  _getAppHelpers() {
+    return {
+      showWorkouts: this._showAllWorkouts.bind(this),
+      clearData: this._clearAllData.bind(this),
+      exportData: this._exportWorkouts.bind(this),
+      importData: this._importWorkouts.bind(this),
+    };
+  }
+
+  // NEW METHOD: Render markers for restored workouts
+  _renderWorkoutMarkersFromStorage() {
+    this.#workouts.forEach(workout => {
+      this._renderWorkoutMarker(workout);
+    });
+  }
+
+  _testLocalStorage() {
+    console.log('Workouts in localStorage:', localStorage.getItem('workouts'));
+    console.log(
+      'Parsed workouts:',
+      JSON.parse(localStorage.getItem('workouts') || '[]')
+    );
+    console.log('App workouts array:', this.#workouts);
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
+  }
+
+  // NEW METHOD: Handle clicks on workout list
+  _moveToPopup(e) {
+    // Match only the workout element
+    const workoutEl = e.target.closest('.workout');
+
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    this.#map.setView(workout.coords, this.#mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
   }
 
   _renderWorkoutMarker(workout) {
